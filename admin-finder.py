@@ -2,10 +2,10 @@
 #!/usr/bin/env python
 
 from __future__ import division
-import Queue
+import queue
 import threading
 import time
-import urllib
+import urllib.request
 import os
 import re
 import sys
@@ -43,7 +43,7 @@ class website:
     def checkStatus(self, address):
         """ This function returns the status of the website """
         try:
-            return urllib.urlopen(address).getcode()
+            return urllib.request.urlopen(address).getcode()
         except IOError:
             print("[!] Something wrong with your address")
             exit()
@@ -67,7 +67,7 @@ class website:
                     print("[=] Interesting Information found in robot file")
                     print("="*80)
                     for line in info:
-                        print "\t"+line
+                        print("\t"+line)
                     print("="*80)
 
                     try:
@@ -78,7 +78,7 @@ class website:
                     print("[-] Nothing useful found in robot file")
 
     def getPage(self, address):
-        return urllib.urlopen(address).readlines()
+        return urllib.request.urlopen(address).readlines()
 
     def parseDir(self, address):
         DirPattern = re.compile(r".+: (.+)\n")
@@ -140,7 +140,7 @@ class scanThread(threading.Thread):
     def online(self, url):
         """ Returns True if the url is online AKA HTTP status code == 200 """
         try:
-            return urllib.urlopen(url).getcode() == 200
+            return urllib.request.urlopen(url).getcode() == 200
         except IOError:
             stateLock.acquire()
             print("[!] Name Resolution Error")
@@ -151,7 +151,7 @@ def main():
     try:
         pathlist = wordlist().load
         # loads the wordlist
-        address = website(raw_input("[+] Website to scan : ")).address
+        address = website(input("[+] Website to scan : ")).address
         mainApp(address, pathlist)
         # Runs the main Application
     except KeyboardInterrupt:
